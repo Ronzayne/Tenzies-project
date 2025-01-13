@@ -121,7 +121,13 @@ function App() {
             New Game
           </button>
         ) : (
-          <button onClick={rollDice} className="roll-dice">
+          <button
+            onClick={() => {
+              rollDice();
+              time();
+            }}
+            className="roll-dice"
+          >
             Roll
           </button>
         )}
