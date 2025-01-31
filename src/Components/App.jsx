@@ -44,6 +44,8 @@ function App() {
     dice.every((die) => die.isHeld) &&
     dice.every((die) => die.value === dice[0].value);
 
+  const notWonYet = !gameWon && dice.every((die) => die.isHeld);
+
   useEffect(() => {
     if (!isRunning) return;
 
@@ -88,22 +90,39 @@ function App() {
   return (
     <>
       <main>
-        {gameWon ? <Confetti width={width} height={height} /> : null}
+        {gameWon ? (
+          <Confetti
+            width={width}
+            height={height}
+            numberOfPieces={1500}
+            recycle={false}
+          />
+        ) : null}
         <div className="sr-only">
           {gameWon && (
             <p>Congratulations! You wan Press "New Game" to start again.</p>
           )}
         </div>
-        {gameWon ? (
-          <div className="you-won">
-            <h3>You won!</h3>
-          </div>
-        ) : undefined}
         <h1 className="title">Tenzies</h1>
-        <p className="instructions">
-          Roll until all dice are the same. Click each die to freeze it at its
-          current value between rolls.
-        </p>
+
+        {notWonYet ? (
+          <p className="instructions">
+            All held dice must be the same value to win❗
+          </p>
+        ) : gameWon ? (
+          <div className="you-won">
+            <h3>
+              Congratulations
+              <br />
+              You won!
+            </h3>
+          </div>
+        ) : (
+          <p className="instructions">
+            Roll until all dice are the same. Click each die to hold it at its
+            current value.
+          </p>
+        )}
         <div className="die-container">{diceElement}</div>
         <div className="roll-timer">
           <p className="timer">Time:{timer}s</p>
