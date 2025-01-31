@@ -40,6 +40,8 @@ main{
   font-weight: 400;
   margin-top: 0;
   text-align: center;
+  padding-left: 15px ;
+  padding-right: 15px;
 }
 .die-container{
   display: grid;
@@ -80,7 +82,8 @@ button.roll-dice{
 }
 .you-won{
   font-family: 'Inter', sans-serif;
-
+  color: green ;
+  text-align: center;
 }
 
 .roll-timer{
