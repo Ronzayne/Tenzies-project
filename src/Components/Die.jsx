@@ -11,6 +11,7 @@ export default function Die(props) {
         aria-label={`Die with value ${props.value}, ${
           props.isHeld ? "held" : "not held"
         }`}
+        disabled={props.gameWon || props.gameOver}
       >
         {props.number}
       </button>
