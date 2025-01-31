@@ -7,7 +7,7 @@ function App() {
   const [dice, setDice] = useState(() => generateAllNewDice());
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(null);
-  const [rolls, setRolls] = useState(0);
+  const [rolls, setRolls] = useState(20);
 
   const buttonRef = useRef(null);
 
@@ -16,7 +16,7 @@ function App() {
   }
   function resetTimerAndRolls() {
     setTimer(0);
-    setRolls(0);
+    setRolls(20);
   }
   function generateAllNewDice() {
     const newDice = [];
@@ -56,16 +56,18 @@ function App() {
     return () => clearInterval(intervalId);
   }, [isRunning]);
 
+  const gameOver = !rolls;
+
   useEffect(() => {
-    if (gameWon) {
+    if (gameWon || gameOver) {
       buttonRef.current.focus();
       setIsRunning(false);
     }
     console.log("gamewon effect rendered");
-  }, [gameWon, isRunning]);
+  }, [gameWon, isRunning, gameOver]);
 
   function rollDice() {
-    if (!gameWon) {
+    if (!gameWon && !gameOver) {
       setDice((prevVal) =>
         prevVal.map((el) =>
           el.isHeld ? el : { ...el, value: Math.floor(Math.random() * 6) + 1 }
@@ -74,7 +76,7 @@ function App() {
     } else {
       setDice(generateAllNewDice());
     }
-    setRolls((prevVal) => prevVal + 1);
+    setRolls((prevVal) => prevVal - 1);
   }
 
   const diceElement = dice.map((dieObj) => (
@@ -84,6 +86,8 @@ function App() {
       isHeld={dieObj.isHeld}
       heldValue={() => hold(dieObj.id)}
       timer={time}
+      gameWon={gameWon}
+      gameOver={gameOver}
     />
   ));
   const { width, height } = useWindowSize();
@@ -105,7 +109,12 @@ function App() {
         </div>
         <h1 className="title">Tenzies</h1>
 
-        {notWonYet ? (
+        {gameOver ? (
+          <p className="game-over">
+            <b>Game Over !</b> <br />
+            <i>No rolls left</i>
+          </p>
+        ) : notWonYet ? (
           <p className="instructions">
             All held dice must be the same value to win❗
           </p>
@@ -126,9 +135,9 @@ function App() {
         <div className="die-container">{diceElement}</div>
         <div className="roll-timer">
           <p className="timer">Time:{timer}s</p>
-          <p className="rolls">Rolls:{rolls}</p>
+          <p className="rolls">Rolls left:{rolls}</p>
         </div>
-        {gameWon ? (
+        {gameWon || gameOver ? (
           <button
             ref={buttonRef}
             className="roll-dice"
