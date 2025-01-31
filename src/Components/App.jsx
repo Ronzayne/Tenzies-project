@@ -76,7 +76,7 @@ function App() {
     } else {
       setDice(generateAllNewDice());
     }
-    setRolls((prevVal) => prevVal - 1);
+    if (!notWonYet) setRolls((prevVal) => prevVal - 1);
   }
 
   const diceElement = dice.map((dieObj) => (
