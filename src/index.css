@@ -86,6 +86,12 @@ button.roll-dice{
   text-align: center;
 }
 
+.game-over{
+  font-family: 'Inter', sans-serif;
+  color: red ;
+  text-align: center;
+}
+
 .roll-timer{
   display: flex;
   justify-content: space-between;
